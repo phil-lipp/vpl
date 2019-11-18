@@ -5,6 +5,17 @@
       <q-space />
       <q-btn icon="create_new_folder" label="New File" stack color="grey" size="10px">
         <q-popup-proxy>
+          <q-card class="my-card bg-grey-6 text-white">
+            <q-card-actions vertical>
+              <q-btn flat>New Project</q-btn>
+              <q-btn flat>New Process</q-btn>
+            </q-card-actions>
+          </q-card>
+       </q-popup-proxy>
+      </q-btn>
+      <q-space />
+      <q-btn icon="folder_open" label="Open File" stack color="grey" size="10px">
+        <q-popup-proxy>
           <div class="q-gutter-md row items-start">
             <q-uploader
               url="http://localhost:4444/upload"
@@ -16,8 +27,6 @@
           </div>
         </q-popup-proxy>
       </q-btn>
-      <q-space />
-      <q-btn icon="folder_open" label="Open File" stack color="grey" size="10px"/>
       <q-space />
       <q-btn @click="$q.notify({message:'File saved succesfully.', icon:'save'})" icon="save" label="Save File" stack color="grey" size="10px"/>
       <q-space />
@@ -33,7 +42,16 @@
       <q-space />
       <q-btn icon="share" label="Insight" stack color="grey" size="10px"/>
       <q-space />
-      <q-btn icon="settings_applications" label="Settings" stack color="grey" size="10px"/>
+      <q-btn icon="settings_applications" label="Settings" stack color="grey" size="10px">
+        <q-popup-proxy>
+          <q-card class="my-card bg-grey-6 text-white">
+            <q-card-actions vertical>
+              <q-btn flat>Themes...</q-btn>
+              <q-btn flat>Preferences</q-btn>
+            </q-card-actions>
+          </q-card>
+       </q-popup-proxy>
+      </q-btn>
       <q-space />
       <q-btn @click="$q.notify({message:'Previous action undone.', icon:'undo'})" icon="undo" label="Undo" stack color="grey" size="10px"/>
       <q-space />
