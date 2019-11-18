@@ -1,4 +1,4 @@
-# Quasar App (helloworld)
+# Quasar App (VPL)
 
 A Quasar Framework app
 
