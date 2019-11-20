@@ -34,7 +34,7 @@
       <q-dialog v-model="help">
        <q-card>
         <q-card-section>
-           Hallöchen lieber Nutzer/liebe Nutzerin. Gehen sie auf google.com für Hilfe. Aber bitte sag den Leuten nicht, dass wir dich geschickt haben.
+           Hallöchen lieber Nutzer/liebe Nutzerin. Gehen Sie bitte auf google.com für Hilfe. Aber sagen Sie nicht, dass wir Sie geschickt haben.
         </q-card-section>
         <q-card-actions align="right">
           <q-btn flat label="OK" color="primary" @click="help = false" />
