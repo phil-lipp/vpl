@@ -3,6 +3,8 @@
     <q-toolbar class="bg-blue text-white q-my-md shadow-2">
       <q-btn flat round dense icon="menu" class="q-mr-sm" />
       <q-space />
+      <q-btn icon="add" label="Add Component" stack color="grey" size="10px"/>
+      <q-space />
       <q-btn icon="create_new_folder" label="New File" stack color="grey" size="10px">
         <q-popup-proxy>
           <q-card class="my-card bg-grey-6 text-white">
@@ -66,6 +68,7 @@
       <q-btn :disable="undoStack.length === 0" @click="undo; $q.notify({message:'Previous action undone.', icon:'undo'})" icon="undo" label="Undo" stack color="grey" size="10px"/>
       <q-space />
       <q-btn :disable="redoStack.length === 0" @click="redo; $q.notify({message:'Previous action redone.', icon:'redo'})" icon="redo" label="Redo" stack color="grey" size="10px"/>
+      <q-space />
       <q-btn label="Undo/Redo test textfield" size="10px">
         <q-popup-proxy>
           <div class="row justify-around items-center q-mt-md">
@@ -82,10 +85,11 @@
   </div>
 </template>
 
-<style scoped>
+<style>
 </style>
 
 <script>
+
 export default {
   data () {
     return {
