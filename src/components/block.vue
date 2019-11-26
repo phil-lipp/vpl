@@ -1,22 +1,22 @@
 <template>
-  <div />
+  <div>
+    <div :style="{'height': ht, 'width': wd, 'background': color}"></div>
+  </div>
 </template>
 
 <script>
 export default {
   // name: 'ComponentName',
-  // props: ['ht', 'wd', 'color'],
+  props: ['ht', 'wd', 'color'],
   data () {
     return {
     }
+  },
+  methods: {
+
   }
 }
 </script>
 
-<style scoped>
-  div {
-    height: 100px;
-    width: 100px;
-    background: blue;
-}
+<style>
 </style>
