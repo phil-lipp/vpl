@@ -3,7 +3,9 @@
     <q-toolbar class="bg-blue text-white q-my-md shadow-2">
       <q-btn flat round dense icon="menu" class="q-mr-sm" />
       <q-space />
-      <q-btn icon="add" label="Add Component" stack color="grey" size="10px"/>
+      <q-btn icon="add" label="Add Component" stack color="grey" size="10px" @click="em"/>
+      <q-space />
+      <q-btn icon="add" label="Add Lane" stack color="grey" size="10px" @click="em2"/>
       <q-space />
       <q-btn icon="create_new_folder" label="New File" stack color="grey" size="10px">
         <q-popup-proxy>
@@ -68,19 +70,6 @@
       <q-btn :disable="undoStack.length === 0" @click="undo; $q.notify({message:'Previous action undone.', icon:'undo'})" icon="undo" label="Undo" stack color="grey" size="10px"/>
       <q-space />
       <q-btn :disable="redoStack.length === 0" @click="redo; $q.notify({message:'Previous action redone.', icon:'redo'})" icon="redo" label="Redo" stack color="grey" size="10px"/>
-      <q-space />
-      <q-btn label="Undo/Redo test textfield" size="10px">
-        <q-popup-proxy>
-          <div class="row justify-around items-center q-mt-md">
-            <div
-              ref="editor"
-              v-mutation="handler"
-              contentEditable="true"
-              class="editable rounded-borders q-pa-sm overflow-auto"
-            >Type here</div>
-          </div>
-        </q-popup-proxy>
-      </q-btn>
     </q-toolbar>
   </div>
 </template>
@@ -102,6 +91,14 @@ export default {
   },
 
   methods: {
+    em: function () {
+      this.$emit('addcomp')
+    },
+
+    em2: function () {
+      this.$emit('addlane')
+    },
+
     undo () {
       // shift the stack
       const data = this.undoStack.shift()
