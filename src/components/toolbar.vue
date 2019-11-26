@@ -3,7 +3,16 @@
     <q-toolbar class="bg-blue text-white q-my-md shadow-2">
       <q-btn flat round dense icon="menu" class="q-mr-sm" />
       <q-space />
-      <q-btn icon="add" label="Add Component" stack color="grey" size="10px" @click="em"/>
+      <q-btn icon="add" label="Add Component" stack color="grey" size="10px">
+        <q-popup-proxy>
+        <q-card class="my-card bg-grey-6 text-white">
+          <q-card-actions vertical>
+            <q-btn flat @click="em">New Block</q-btn>
+            <q-btn flat @click="em3">New Arrow</q-btn>
+          </q-card-actions>
+        </q-card>
+        </q-popup-proxy>
+      </q-btn>
       <q-space />
       <q-btn icon="add" label="Add Lane" stack color="grey" size="10px" @click="em2"/>
       <q-space />
@@ -97,6 +106,10 @@ export default {
 
     em2: function () {
       this.$emit('addlane')
+    },
+
+    em3: function () {
+      this.$emit('addArrow')
     },
 
     undo () {
