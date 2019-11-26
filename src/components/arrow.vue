@@ -7,7 +7,7 @@
 <script>
 export default {
   // name: 'ComponentName',
-  props: ['ht', 'wd'],
+  // props: ['ht', 'wd'],
   data () {
     return {
     }
