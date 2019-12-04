@@ -1,7 +1,8 @@
 <template>
   <q-page>
   <div>
-    <toolbar @addcomp="addItem()" @addlane="incrementLanes()" @addArrow="addArrow()"></toolbar>
+    <toolbar @addcomp="addItem()" @addlane="incrementLanes()" @addArrow="addArrow()" @undoAction="undo()" @redoAction="redo()">
+    </toolbar>
     <lane v-for="i in lanecounter" :key="'lane'+i" :numb="i"></lane>
     <z-top>
       <block :ht="'100px'" :wd="'100px'" :color="'blue'" @mousedown.native="moveStart($event, i-1)" @mouseup.native="moveEnd($event, i-1)" @mousemove.native="moveActive($event, i-1)"
@@ -114,6 +115,60 @@ export default {
 
     arrMoveEnd: function (event, index) {
       this.moving = false
+    },
+    undo () {
+      // shift the stack
+      const data = this.undoStack.shift()
+      if (data !== void 0) {
+        // block undo from receiving its own data
+        this.undoBlocked = true
+        this.$refs.editor.innerText = data
+      }
+    },
+
+    redo () {
+      // shift the stack
+      const data = this.redoStack.shift()
+      if (data !== void 0) {
+        // unblock undo from receiving redo data
+        this.undoBlocked = false
+        this.$refs.editor.innerText = data
+      }
+    },
+
+    handler (mutationRecords) {
+      mutationRecords.forEach(record => {
+        if (record.type === 'characterData') {
+          this.undoStack.unshift(record.oldValue)
+          this.checkStack(this.undoStack)
+          this.clearStack(this.redoStack)
+        } else if (record.type === 'childList') {
+          record.removedNodes.forEach(node => {
+            if (this.undoBlocked === false) {
+              // comes from redo
+              this.undoStack.unshift(node.textContent)
+            } else {
+              // comes from undo
+              this.redoStack.unshift(node.textContent)
+            }
+          })
+
+          // check stacks
+          this.checkStack(this.undoStack)
+          this.checkStack(this.redoStack)
+          this.undoBlocked = false
+        }
+      })
+    },
+
+    checkStack (stack) {
+      if (stack.length > this.maxStack) {
+        stack.splice(this.maxStack)
+      }
+    },
+
+    clearStack (stack) {
+      stack.splice(0)
     }
   }
 }

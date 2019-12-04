@@ -76,9 +76,9 @@
        </q-popup-proxy>
       </q-btn>
       <q-space />
-      <q-btn :disable="undoStack.length === 0" @click="undo; $q.notify({message:'Previous action undone.', icon:'undo'})" icon="undo" label="Undo" stack color="grey" size="10px"/>
+      <q-btn :disable="undoStack.length === 0" @click="em4; $q.notify({message:'Previous action undone.', icon:'undo'})" icon="undo" label="Undo" stack color="grey" size="10px"/>
       <q-space />
-      <q-btn :disable="redoStack.length === 0" @click="redo; $q.notify({message:'Previous action redone.', icon:'redo'})" icon="redo" label="Redo" stack color="grey" size="10px"/>
+      <q-btn :disable="redoStack.length === 0" @click="em5; $q.notify({message:'Previous action redone.', icon:'redo'})" icon="redo" label="Redo" stack color="grey" size="10px"/>
     </q-toolbar>
   </div>
 </template>
@@ -111,62 +111,11 @@ export default {
     em3: function () {
       this.$emit('addArrow')
     },
-
-    undo () {
-      // shift the stack
-      const data = this.undoStack.shift()
+    em4: function () {
       this.$emit('undoAction')
-      if (data !== void 0) {
-        // block undo from receiving its own data
-        this.undoBlocked = true
-        this.$refs.editor.innerText = data
-      }
     },
-
-    redo () {
-      // shift the stack
-      const data = this.redoStack.shift()
+    em5: function () {
       this.$emit('redoAction')
-      if (data !== void 0) {
-        // unblock undo from receiving redo data
-        this.undoBlocked = false
-        this.$refs.editor.innerText = data
-      }
-    },
-
-    handler (mutationRecords) {
-      mutationRecords.forEach(record => {
-        if (record.type === 'characterData') {
-          this.undoStack.unshift(record.oldValue)
-          this.checkStack(this.undoStack)
-          this.clearStack(this.redoStack)
-        } else if (record.type === 'childList') {
-          record.removedNodes.forEach(node => {
-            if (this.undoBlocked === false) {
-              // comes from redo
-              this.undoStack.unshift(node.textContent)
-            } else {
-              // comes from undo
-              this.redoStack.unshift(node.textContent)
-            }
-          })
-
-          // check stacks
-          this.checkStack(this.undoStack)
-          this.checkStack(this.redoStack)
-          this.undoBlocked = false
-        }
-      })
-    },
-
-    checkStack (stack) {
-      if (stack.length > this.maxStack) {
-        stack.splice(this.maxStack)
-      }
-    },
-
-    clearStack (stack) {
-      stack.splice(0)
     }
   }
 }
