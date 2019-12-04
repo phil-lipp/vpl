@@ -115,6 +115,7 @@ export default {
     undo () {
       // shift the stack
       const data = this.undoStack.shift()
+      this.$emit('undoAction')
       if (data !== void 0) {
         // block undo from receiving its own data
         this.undoBlocked = true
@@ -125,6 +126,7 @@ export default {
     redo () {
       // shift the stack
       const data = this.redoStack.shift()
+      this.$emit('redoAction')
       if (data !== void 0) {
         // unblock undo from receiving redo data
         this.undoBlocked = false
