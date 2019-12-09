@@ -7,7 +7,7 @@
       <block :ht="'100px'" :wd="'100px'" :color="'blue'" @mousedown.native="moveStart($event, 'Block', i-1)" @mouseup.native="moveEnd($event, 'Block', i-1)" @mousemove.native="moveActive($event, 'Block', i-1)"
       class="q-ma-md movable" :ref="'Block'+(i-1)"
       :style="{'left': positionsBlock[i-1][0] + 'px', 'top': positionsBlock[i-1][1] + 'px'}" v-for="i in positionsBlock.length" :key="'block'+i"></block>
-      <arrow :color ="color" @mousedown.native="moveStart($event, 'Arrow', i-1)" @mouseup.native="moveEnd($event, 'Arrow', i-1)" @mousemove.native="moveActive($event, 'Arrow', i-1)"
+      <arrow :color ="color[i-1]" @mousedown.native="moveStart($event, 'Arrow', i-1)" @mouseup.native="moveEnd($event, 'Arrow', i-1)" @mousemove.native="moveActive($event, 'Arrow', i-1)"
       class="q-ma-md movable" :ref="'Arrow'+(i-1)"
       :style="{'left': positionsArrow[i-1][0] + 'px', 'top': positionsArrow[i-1][1] + 'px'}" v-for="i in positionsArrow.length" :key="'arrow'+i"></arrow>
     </z-top>
@@ -43,7 +43,7 @@ export default {
       moving: false,
       positionsBlock: [[200, 200]],
       positionsArrow: [[280, 180]],
-      color: 'purple',
+      color: ['purple'],
       lanecounter: 1
     }
   },
@@ -55,6 +55,7 @@ export default {
         this['positions' + type].push([400, 200])
       } else {
         this['positions' + type].push([480, 180])
+        this['color'].push('purple')
       }
     },
 
@@ -117,9 +118,9 @@ export default {
 
             if (overlap) {
               console.log(type + ' of index ' + index + ' collided of index ' + i)
-              this['color'] = 'green'
+              this['color'][index] = 'green'
             } else {
-              this['color'] = 'purple'
+              this['color'][index] = 'purple'
             }
           }
         }
