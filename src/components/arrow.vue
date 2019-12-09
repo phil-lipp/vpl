@@ -1,13 +1,13 @@
 <template>
   <div>
-    <q-icon name="arrow_right_alt" size="140px" color="purple" />
+    <q-icon name="arrow_right_alt" size="140px" :style="{'color': color}" />
   </div>
 </template>
 
 <script>
 export default {
   // name: 'ComponentName',
-  // props: ['ht', 'wd'],
+  props: ['color'],
   data () {
     return {
     }
