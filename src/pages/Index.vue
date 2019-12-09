@@ -1,15 +1,15 @@
 <template>
   <q-page>
   <div>
-    <toolbar @addcomp="addItem()" @addlane="incrementLanes()" @addArrow="addArrow()"></toolbar>
+    <toolbar @addcomp="addItem('Block')" @addlane="incrementLanes()" @addArrow="addItem('Arrow')"></toolbar>
     <lane v-for="i in lanecounter" :key="'lane'+i" :numb="i"></lane>
     <z-top>
-      <block :ht="'100px'" :wd="'100px'" :color="'blue'" @mousedown.native="moveStart($event, i-1)" @mouseup.native="moveEnd($event, i-1)" @mousemove.native="moveActive($event, i-1)"
-      class="q-ma-md movable" :ref="'block'+(i-1)"
-      :style="{'left': positions[i-1][0] + 'px', 'top': positions[i-1][1] + 'px'}" v-for="i in positions.length" :key="'block'+i"></block>
-      <arrow @mousedown.native="arrMoveStart($event, i-1)" @mouseup.native="arrMoveEnd($event, i-1)" @mousemove.native="arrMoveActive($event, i-1)"
-      class="q-ma-md movable" :ref="'arrow'+(i-1)"
-      :style="{'left': arrPositions[i-1][0] + 'px', 'top': arrPositions[i-1][1] + 'px'}" v-for="i in arrPositions.length" :key="'arrow'+i"></arrow>
+      <block :ht="'100px'" :wd="'100px'" :color="'blue'" @mousedown.native="moveStart($event, 'Block', i-1)" @mouseup.native="moveEnd($event, 'Block', i-1)" @mousemove.native="moveActive($event, 'Block', i-1)"
+      class="q-ma-md movable" :ref="'Block'+(i-1)"
+      :style="{'left': positionsBlock[i-1][0] + 'px', 'top': positionsBlock[i-1][1] + 'px'}" v-for="i in positionsBlock.length" :key="'block'+i"></block>
+      <arrow :color ="color" @mousedown.native="moveStart($event, 'Arrow', i-1)" @mouseup.native="moveEnd($event, 'Arrow', i-1)" @mousemove.native="moveActive($event, 'Arrow', i-1)"
+      class="q-ma-md movable" :ref="'Arrow'+(i-1)"
+      :style="{'left': positionsArrow[i-1][0] + 'px', 'top': positionsArrow[i-1][1] + 'px'}" v-for="i in positionsArrow.length" :key="'arrow'+i"></arrow>
     </z-top>
   </div>
   </q-page>
@@ -41,78 +41,92 @@ export default {
     return {
       txt: '',
       moving: false,
-      positions: [[200, 200]],
-      arrPositions: [[280, 180]],
-      color1: 'red',
+      positionsBlock: [[200, 200]],
+      positionsArrow: [[280, 180]],
+      color: 'purple',
       lanecounter: 1
     }
   },
   methods: {
-    addItem: function () {
-      this['positions'].push([400, 200])
+    addItem: function (type) {
+      // Read this:
+      // https://vuejs.org/2016/02/06/common-gotchas/
+      if (type === 'Block') {
+        this['positions' + type].push([400, 200])
+      } else {
+        this['positions' + type].push([480, 180])
+      }
     },
 
     incrementLanes: function () {
       this.lanecounter += 1
     },
 
-    addArrow: function () {
-      this['arrPositions'].push([480, 180])
-    },
-
-    moveStart: function (event, index) {
+    moveStart: function (event, type, index) {
       this.moving = true
-      this['offsetInitX' + index] = event.offsetX
-      this['offsetInitY' + index] = event.offsetY
+      this['offsetInitX' + type + index] = event.offsetX
+      this['offsetInitY' + type + index] = event.offsetY
     },
 
-    moveActive: function (event, index) {
+    moveActive: function (event, type, index) {
       if (this.moving) {
-        console.log(index + ' is moving')
-        var posVar = 'positions'
+        console.log(type + ' of index ' + index + ' is moving')
+        var posVar = 'positions' + type
 
+        this['movingTypeCurent'] = type
         this['movingIndexCurrent'] = index
 
-        var deltaX = event.offsetX - this['offsetInitX' + index]
-        var deltaY = event.offsetY - this['offsetInitY' + index]
+        var deltaX = event.offsetX - this['offsetInitX' + type + index]
+        var deltaY = event.offsetY - this['offsetInitY' + type + index]
 
         console.log('I am here')
+
+        // update the positions of the element in that specific index
+        // we use this.$set because vue cannot track simple array assignments
+        // https://vuejs.org/2016/02/06/common-gotchas/
 
         console.log(posVar)
         this.$set(this[posVar][index], 0, this[posVar][index][0] + deltaX)
         this.$set(this[posVar][index], 1, this[posVar][index][1] + deltaY)
+
+        // Check for collision
+
+        var boundBox1
+
+        if (typeof this.$refs[type + index].$el === 'undefined') {
+          boundBox1 = this.$refs[type + index][0].$el.getBoundingClientRect()
+        } else {
+          boundBox1 = this.$refs[type + index].$el.getBoundingClientRect()
+        }
+
+        for (var i = 0; i < this.positionsBlock.length; i++) {
+          if (type === 'Arrow') {
+            let boundBox2
+
+            // Get the bounding box of the other elements
+            if (typeof this.$refs['Block' + i].$el === 'undefined') {
+              boundBox2 = this.$refs['Block' + i][0].$el.getBoundingClientRect()
+            } else {
+              boundBox2 = this.$refs['Block' + i].$el.getBoundingClientRect()
+            }
+
+            var overlap = !(boundBox1.right < boundBox2.left ||
+                            boundBox1.left > boundBox2.right ||
+                            boundBox1.bottom < boundBox2.top ||
+                            boundBox1.top > boundBox2.bottom)
+
+            if (overlap) {
+              console.log(type + ' of index ' + index + ' collided of index ' + i)
+              this['color'] = 'green'
+            } else {
+              this['color'] = 'purple'
+            }
+          }
+        }
       }
     },
 
-    moveEnd: function (event, index) {
-      this.moving = false
-    },
-
-    arrMoveStart: function (event, index) {
-      this.moving = true
-      this['offsetInitX' + index] = event.offsetX
-      this['offsetInitY' + index] = event.offsetY
-    },
-
-    arrMoveActive: function (event, index) {
-      if (this.moving) {
-        console.log(index + ' is moving')
-        var posVar = 'arrPositions'
-
-        this['movingIndexCurrent'] = index
-
-        var deltaX = event.offsetX - this['offsetInitX' + index]
-        var deltaY = event.offsetY - this['offsetInitY' + index]
-
-        console.log('I am here')
-
-        console.log(posVar)
-        this.$set(this[posVar][index], 0, this[posVar][index][0] + deltaX)
-        this.$set(this[posVar][index], 1, this[posVar][index][1] + deltaY)
-      }
-    },
-
-    arrMoveEnd: function (event, index) {
+    moveEnd: function (event, type, index) {
       this.moving = false
     }
   }
