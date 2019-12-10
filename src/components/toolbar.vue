@@ -9,12 +9,24 @@
           <q-card-actions vertical>
             <q-btn flat @click="em">New Block</q-btn>
             <q-btn flat @click="em3">New Arrow</q-btn>
+            <q-btn flat @click="em2">Add Lane</q-btn>
           </q-card-actions>
         </q-card>
         </q-popup-proxy>
       </q-btn>
       <q-space />
-      <q-btn icon="add" label="Add Lane" stack color="grey" size="10px" @click="em2"/>
+      <q-btn icon="add" label="Own Image" stack color="grey" size="10px">
+        <q-popup-proxy>
+          <q-input color="black" v-model="url" placeholder="Enter your URL here" label="Image">
+            <template v-slot:append>
+                <q-icon v-if="url !== ''" name="close" @click="url = ''" class="cursor-pointer" />
+            </template>
+            <template v-slot:after>
+              <q-btn round dense flat icon="done" @click="ownIMG" />
+            </template>
+          </q-input>
+        </q-popup-proxy>
+      </q-btn>
       <q-space />
       <q-btn icon="create_new_folder" label="New File" stack color="grey" size="10px">
         <q-popup-proxy>
@@ -27,16 +39,24 @@
        </q-popup-proxy>
       </q-btn>
       <q-space />
-      <q-btn icon="folder_open" label="Open File" stack color="grey" size="10px">
+      <q-btn icon="folder_open" label="Open Image" stack color="grey" size="10px">
         <q-popup-proxy>
-          <div class="q-gutter-md row items-start">
-            <q-uploader
-              url="http://localhost:4444/upload"
-              label="Upload your Image"
-              multiple =  False
-              accept=".jpg, image/*"
-              style="max-width: 500px"
-            />
+          <div class="q-gutter-xs bg-grey-6 column items-start">
+            <q-btn @click="image1">
+              <q-avatar rounded size="80px">
+                <q-img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Codex_Manesse_127r.jpg/220px-Codex_Manesse_127r.jpg"/>
+              </q-avatar>
+            </q-btn>
+            <q-btn @click="image2">
+              <q-avatar rounded size="80px">
+                <q-img src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Freising_manuscript.jpg"/>
+              </q-avatar>
+            </q-btn>
+            <q-btn @click="image3">
+              <q-avatar rounded size="80px">
+                <q-img src="https://www.typografie.info/3/uploads/monthly_03_2014/ccs-1-0-32484400-1393665236_thumb.jpg"/>
+              </q-avatar>
+            </q-btn>
           </div>
         </q-popup-proxy>
       </q-btn>
@@ -95,7 +115,8 @@ export default {
       undoStack: [],
       redoStack: [],
       undoBlocked: false,
-      help: false
+      help: false,
+      url: ''
     }
   },
 
@@ -110,6 +131,22 @@ export default {
 
     em3: function () {
       this.$emit('addArrow')
+    },
+
+    image1: function () {
+      this.$emit('image1')
+    },
+
+    image2: function () {
+      this.$emit('image2')
+    },
+
+    image3: function () {
+      this.$emit('image3')
+    },
+
+    ownIMG: function () {
+      this.$emit('ownIMG', this.url)
     },
 
     undo () {
