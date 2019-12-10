@@ -17,7 +17,14 @@
       <q-space />
       <q-btn icon="add" label="Own Image" stack color="grey" size="10px">
         <q-popup-proxy>
-          <q-input/>
+          <q-input color="black" v-model="url" placeholder="Enter your URL here" label="Image">
+            <template v-slot:append>
+                <q-icon v-if="url !== ''" name="close" @click="url = ''" class="cursor-pointer" />
+            </template>
+            <template v-slot:after>
+              <q-btn round dense flat icon="done" @click="ownIMG" />
+            </template>
+          </q-input>
         </q-popup-proxy>
       </q-btn>
       <q-space />
@@ -108,7 +115,8 @@ export default {
       undoStack: [],
       redoStack: [],
       undoBlocked: false,
-      help: false
+      help: false,
+      url: ''
     }
   },
 
@@ -135,6 +143,10 @@ export default {
 
     image3: function () {
       this.$emit('image3')
+    },
+
+    ownIMG: function () {
+      this.$emit('ownIMG', this.url)
     },
 
     undo () {

@@ -1,7 +1,8 @@
 <template>
   <q-page>
   <div>
-    <toolbar @addcomp="addItem('Block')" @addlane="incrementLanes()" @addArrow="addItem('Arrow')" @image1="addIMG(1)" @image2="addIMG(2)" @image3="addIMG(3)"></toolbar>
+    <toolbar @addcomp="addItem('Block')" @addlane="incrementLanes()" @addArrow="addItem('Arrow')" @image1="addIMG(1)" @image2="addIMG(2)" @image3="addIMG(3)"
+    @ownIMG="addOwnIMG"></toolbar>
     <lane v-for="i in lanecounter" :key="'lane'+i" :numb="i"></lane>
     <z-top>
       <block :ht="'100px'" :wd="'100px'" :color="'blue'" :image="images[i-1]" @mousedown.native="moveStart($event, 'Block', i-1)" @mouseup.native="moveEnd($event, 'Block', i-1)" @mousemove.native="moveActive($event, 'Block', i-1)"
@@ -143,6 +144,11 @@ export default {
       if (i === 3) {
         this['images'].push('https://www.typografie.info/3/uploads/monthly_03_2014/ccs-1-0-32484400-1393665236_thumb.jpg')
       }
+    },
+
+    addOwnIMG: function (url) {
+      this['positionsBlock'].push([400, 200])
+      this['images'].push(url)
     }
   }
 }
