@@ -1,10 +1,10 @@
 <template>
   <q-page>
   <div>
-    <toolbar @addcomp="addItem('Block')" @addlane="incrementLanes()" @addArrow="addItem('Arrow')"></toolbar>
+    <toolbar @addcomp="addItem('Block')" @addlane="incrementLanes()" @addArrow="addItem('Arrow')" @image1="addIMG(1)" @image2="addIMG(2)" @image3="addIMG(3)"></toolbar>
     <lane v-for="i in lanecounter" :key="'lane'+i" :numb="i"></lane>
     <z-top>
-      <block :ht="'100px'" :wd="'100px'" :color="'blue'" @mousedown.native="moveStart($event, 'Block', i-1)" @mouseup.native="moveEnd($event, 'Block', i-1)" @mousemove.native="moveActive($event, 'Block', i-1)"
+      <block :ht="'100px'" :wd="'100px'" :color="'blue'" :image="images[i-1]" @mousedown.native="moveStart($event, 'Block', i-1)" @mouseup.native="moveEnd($event, 'Block', i-1)" @mousemove.native="moveActive($event, 'Block', i-1)"
       class="q-ma-md movable" :ref="'Block'+(i-1)"
       :style="{'left': positionsBlock[i-1][0] + 'px', 'top': positionsBlock[i-1][1] + 'px'}" v-for="i in positionsBlock.length" :key="'block'+i"></block>
       <arrow :color ="color[i-1]" @mousedown.native="moveStart($event, 'Arrow', i-1)" @mouseup.native="moveEnd($event, 'Arrow', i-1)" @mousemove.native="moveActive($event, 'Arrow', i-1)"
@@ -43,6 +43,7 @@ export default {
       moving: false,
       positionsBlock: [[200, 200]],
       positionsArrow: [[280, 180]],
+      images: ['https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Codex_Manesse_127r.jpg/220px-Codex_Manesse_127r.jpg'],
       color: ['purple'],
       lanecounter: 1
     }
@@ -129,6 +130,19 @@ export default {
 
     moveEnd: function (event, type, index) {
       this.moving = false
+    },
+
+    addIMG: function (i) {
+      this['positionsBlock'].push([400, 200])
+      if (i === 1) {
+        this['images'].push('https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Codex_Manesse_127r.jpg/220px-Codex_Manesse_127r.jpg')
+      }
+      if (i === 2) {
+        this['images'].push('https://upload.wikimedia.org/wikipedia/commons/7/7d/Freising_manuscript.jpg')
+      }
+      if (i === 3) {
+        this['images'].push('https://www.typografie.info/3/uploads/monthly_03_2014/ccs-1-0-32484400-1393665236_thumb.jpg')
+      }
     }
   }
 }
