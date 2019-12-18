@@ -5,7 +5,7 @@
     @ownIMG="addOwnIMG"></toolbar>
     <lane v-for="i in lanecounter" :key="'lane'+i" :numb="i"></lane>
     <z-top>
-      <block :ht="'100px'" :wd="'100px'" :color="'blue'" :image="images[i-1]" @mousedown.native="moveStart($event, 'Block', i-1)" @mouseup.native="moveEnd($event, 'Block', i-1)" @mousemove.native="moveActive($event, 'Block', i-1)"
+      <block :ht="'100px'" :wd="'120px'" :color="'blue'" :image="images[i-1]" @mousedown.native="moveStart($event, 'Block', i-1)" @mouseup.native="moveEnd($event, 'Block', i-1)" @mousemove.native="moveActive($event, 'Block', i-1)"
       class="q-ma-md movable" :ref="'Block'+(i-1)"
       :style="{'left': positionsBlock[i-1][0] + 'px', 'top': positionsBlock[i-1][1] + 'px'}" v-for="i in positionsBlock.length" :key="'block'+i"></block>
       <arrow :color ="color[i-1]" @mousedown.native="moveStart($event, 'Arrow', i-1)" @mouseup.native="moveEnd($event, 'Arrow', i-1)" @mousemove.native="moveActive($event, 'Arrow', i-1)"
@@ -121,6 +121,7 @@ export default {
             if (overlap) {
               console.log(type + ' of index ' + index + ' collided of index ' + i)
               this['color'][index] = 'green'
+              break
             } else {
               this['color'][index] = 'purple'
             }
