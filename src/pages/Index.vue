@@ -182,6 +182,7 @@ export default {
 
     addIMG: function (i) {
       this['positionsBlock'].push([360, 150])
+      this['blocksMovable'].push(true)
       if (i === 1) {
         this['images'].push(this['url1'])
       }
@@ -195,6 +196,7 @@ export default {
 
     addOwnIMG: function (url) {
       this['positionsBlock'].push([400, 200])
+      this['blocksMovable'].push(true)
       this['images'].push(url)
     }
   }
