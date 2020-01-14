@@ -46,7 +46,10 @@ export default {
       positionsArrow: [[280, 180]],
       images: ['https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Codex_Manesse_127r.jpg/220px-Codex_Manesse_127r.jpg'],
       color: ['purple'],
-      lanecounter: 1
+      lanecounter: 1,
+      url1: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Codex_Manesse_127r.jpg/220px-Codex_Manesse_127r.jpg',
+      url2: 'https://upload.wikimedia.org/wikipedia/commons/7/7d/Freising_manuscript.jpg',
+      url3: 'https://www.typografie.info/3/uploads/monthly_03_2014/ccs-1-0-32484400-1393665236_thumb.jpg'
     }
   },
   methods: {
@@ -137,13 +140,13 @@ export default {
     addIMG: function (i) {
       this['positionsBlock'].push([400, 200])
       if (i === 1) {
-        this['images'].push('https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Codex_Manesse_127r.jpg/220px-Codex_Manesse_127r.jpg')
+        this['images'].push(this['url1'])
       }
       if (i === 2) {
-        this['images'].push('https://upload.wikimedia.org/wikipedia/commons/7/7d/Freising_manuscript.jpg')
+        this['images'].push(this['url2'])
       }
       if (i === 3) {
-        this['images'].push('https://www.typografie.info/3/uploads/monthly_03_2014/ccs-1-0-32484400-1393665236_thumb.jpg')
+        this['images'].push(this['url3'])
       }
     },
 
