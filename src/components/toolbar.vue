@@ -8,7 +8,7 @@
         <q-card class="my-card bg-grey-6 text-white">
           <q-card-actions vertical>
             <q-btn flat @click="em">New Block</q-btn>
-            <q-btn flat @click="em3">New Arrow</q-btn>
+            <q-btn flat @click="em3">Binarization</q-btn>
             <q-btn flat @click="em2">Add Lane</q-btn>
           </q-card-actions>
         </q-card>
@@ -44,17 +44,17 @@
           <div class="q-gutter-xs bg-grey-6 column items-start">
             <q-btn @click="image1">
               <q-avatar rounded size="80px">
-                <q-img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Codex_Manesse_127r.jpg/220px-Codex_Manesse_127r.jpg"/>
+                <q-img :src="'statics/img1.jpg'"/>
               </q-avatar>
             </q-btn>
             <q-btn @click="image2">
               <q-avatar rounded size="80px">
-                <q-img src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Freising_manuscript.jpg"/>
+                <q-img :src="'statics/img2.jpg'"/>
               </q-avatar>
             </q-btn>
             <q-btn @click="image3">
               <q-avatar rounded size="80px">
-                <q-img src="https://www.typografie.info/3/uploads/monthly_03_2014/ccs-1-0-32484400-1393665236_thumb.jpg"/>
+                <q-img :src="'statics/img3.jpg'"/>
               </q-avatar>
             </q-btn>
           </div>
