@@ -7,7 +7,6 @@
         <q-popup-proxy>
         <q-card class="my-card bg-grey-6 text-white">
           <q-card-actions vertical>
-            <q-btn flat @click="em">New Block</q-btn>
             <q-btn flat @click="em3">Binarization</q-btn>
             <q-btn flat @click="em2">Add Lane</q-btn>
           </q-card-actions>
@@ -121,10 +120,6 @@ export default {
   },
 
   methods: {
-    em: function () {
-      this.$emit('addcomp')
-    },
-
     em2: function () {
       this.$emit('addlane')
     },
