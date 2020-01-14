@@ -1,7 +1,7 @@
 <template>
   <q-page>
   <div>
-    <toolbar @addcomp="addItem('Block')" @addlane="incrementLanes()" @addArrow="addItem('Arrow')" @image1="addIMG(1)" @image2="addIMG(2)" @image3="addIMG(3)"
+    <toolbar @addlane="incrementLanes()" @addArrow="addItem('Arrow')" @image1="addIMG(1)" @image2="addIMG(2)" @image3="addIMG(3)"
     @ownIMG="addOwnIMG"></toolbar>
     <lane v-for="i in lanecounter" :key="'lane'+i" :numb="i"></lane>
     <z-top>
@@ -61,14 +61,9 @@ export default {
     addItem: function (type) {
       // Read this:
       // https://vuejs.org/2016/02/06/common-gotchas/
-      if (type === 'Block') {
-        this['positions' + type].push([360, 150])
-        this['blocksMovable'].push(true)
-      } else {
-        this['positions' + type].push([480, 180])
-        this['color'].push('purple')
-        this['arrowMovable'].push(true)
-      }
+      this['positions' + type].push([480, 180])
+      this['color'].push('purple')
+      this['arrowMovable'].push(true)
     },
 
     incrementLanes: function () {
