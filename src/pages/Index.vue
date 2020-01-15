@@ -135,36 +135,38 @@ export default {
                             boundBox1.bottom < boundBox2.top ||
                             boundBox1.top > boundBox2.bottom)
 
-            if (overlap) {
-              console.log(type + ' of index ' + index + ' collided of index ' + i)
-              this['color'][index] = 'green'
-              if (this['images'][i] === this['url1']) {
-                this['positionsBlock'].push([this['positionsBlock'][i][0] + 245, this['positionsBlock'][i][1]])
-                this['blocksMovable'].push(true)
-                this['images'].push(this['urlb1'])
-                this['arrowMovable'][index] = false
-                this['blocksMovable'][i] = false
-                this.moving = false
+            if (this['arrowMovable'][index] === true) {
+              if (overlap) {
+                console.log(type + ' of index ' + index + ' collided of index ' + i)
+                this['color'][index] = 'green'
+                if (this['images'][i] === this['url1']) {
+                  this['positionsBlock'].push([this['positionsBlock'][i][0] + 245, this['positionsBlock'][i][1]])
+                  this['blocksMovable'].push(true)
+                  this['images'].push(this['urlb1'])
+                  this['arrowMovable'][index] = false
+                  this['blocksMovable'][i] = false
+                  this.moving = false
+                }
+                if (this['images'][i] === this['url2']) {
+                  this['positionsBlock'].push([this['positionsBlock'][i][0] + 245, this['positionsBlock'][i][1]])
+                  this['blocksMovable'].push(true)
+                  this['images'].push(this['urlb2'])
+                  this['arrowMovable'][index] = false
+                  this['blocksMovable'][i] = false
+                  this.moving = false
+                }
+                if (this['images'][i] === this['url3']) {
+                  this['positionsBlock'].push([this['positionsBlock'][i][0] + 245, this['positionsBlock'][i][1]])
+                  this['blocksMovable'].push(true)
+                  this['images'].push(this['urlb3'])
+                  this['arrowMovable'][index] = false
+                  this['blocksMovable'][i] = false
+                  this.moving = false
+                }
+                break
+              } else {
+                this['color'][index] = 'purple'
               }
-              if (this['images'][i] === this['url2']) {
-                this['positionsBlock'].push([this['positionsBlock'][i][0] + 245, this['positionsBlock'][i][1]])
-                this['blocksMovable'].push(true)
-                this['images'].push(this['urlb2'])
-                this['arrowMovable'][index] = false
-                this['blocksMovable'][i] = false
-                this.moving = false
-              }
-              if (this['images'][i] === this['url3']) {
-                this['positionsBlock'].push([this['positionsBlock'][i][0] + 245, this['positionsBlock'][i][1]])
-                this['blocksMovable'].push(true)
-                this['images'].push(this['urlb3'])
-                this['arrowMovable'][index] = false
-                this['blocksMovable'][i] = false
-                this.moving = false
-              }
-              break
-            } else {
-              this['color'][index] = 'purple'
             }
           }
         }
