@@ -1,9 +1,10 @@
 <template>
   <div>
-    <div :style="{'height': ht, 'width': wd, 'background': color}">
+    <div :style="{'height': ht, 'width': wd}">
       <q-img
       :src="image"
-      style="height: 180px; max-width: 120px"></q-img>
+      style="height: 180px; max-width: 400px"
+      contain></q-img>
     </div>
   </div>
 </template>

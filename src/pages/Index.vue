@@ -1,7 +1,7 @@
 <template>
   <q-page>
   <div>
-    <toolbar @addcomp="addItem('Block')" @addlane="incrementLanes()" @addArrow="addItem('Arrow')" @image1="addIMG(1)" @image2="addIMG(2)" @image3="addIMG(3)"
+    <toolbar @addlane="incrementLanes()" @addArrow="addItem('Arrow')" @image1="addIMG(1)" @image2="addIMG(2)" @image3="addIMG(3)"
     @ownIMG="addOwnIMG"></toolbar>
     <lane v-for="i in lanecounter" :key="'lane'+i" :numb="i"></lane>
     <z-top>
@@ -42,9 +42,17 @@ export default {
     return {
       txt: '',
       moving: false,
-      positionsBlock: [[200, 200]],
+      positionsBlock: [[160, 150]],
       positionsArrow: [[280, 180]],
-      images: ['https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Codex_Manesse_127r.jpg/220px-Codex_Manesse_127r.jpg'],
+      blocksMovable: [true],
+      arrowMovable: [true],
+      url1: 'statics/img1.jpg',
+      url2: 'statics/img2.jpg',
+      url3: 'statics/img3.jpg',
+      urlb1: 'statics/img1bin.jpg',
+      urlb2: 'statics/img2bin.jpg',
+      urlb3: 'statics/img3bin.jpg',
+      images: ['statics/img1.jpg'],
       color: ['purple'],
       lanecounter: 1,
       url1: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Codex_Manesse_127r.jpg/220px-Codex_Manesse_127r.jpg',
@@ -56,12 +64,9 @@ export default {
     addItem: function (type) {
       // Read this:
       // https://vuejs.org/2016/02/06/common-gotchas/
-      if (type === 'Block') {
-        this['positions' + type].push([400, 200])
-      } else {
-        this['positions' + type].push([480, 180])
-        this['color'].push('purple')
-      }
+      this['positions' + type].push([480, 180])
+      this['color'].push('purple')
+      this['arrowMovable'].push(true)
     },
 
     incrementLanes: function () {
@@ -69,9 +74,21 @@ export default {
     },
 
     moveStart: function (event, type, index) {
-      this.moving = true
-      this['offsetInitX' + type + index] = event.offsetX
-      this['offsetInitY' + type + index] = event.offsetY
+      if (type === 'Block') {
+        if (this['blocksMovable'][index] === true) {
+          this.moving = true
+          this['offsetInitX' + type + index] = event.offsetX
+          this['offsetInitY' + type + index] = event.offsetY
+        }
+      } else if (type === 'Arrow') {
+        if (this['arrowMovable'][index] === true) {
+          this.moving = true
+          this['offsetInitX' + type + index] = event.offsetX
+          this['offsetInitY' + type + index] = event.offsetY
+        }
+      } else {
+
+      }
     },
 
     moveActive: function (event, type, index) {
@@ -124,6 +141,30 @@ export default {
             if (overlap) {
               console.log(type + ' of index ' + index + ' collided of index ' + i)
               this['color'][index] = 'green'
+              if (this['images'][i] === this['url1']) {
+                this['positionsBlock'].push([this['positionsBlock'][i][0] + 245, this['positionsBlock'][i][1]])
+                this['blocksMovable'].push(true)
+                this['images'].push(this['urlb1'])
+                this['arrowMovable'][index] = false
+                this['blocksMovable'][i] = false
+                this.moving = false
+              }
+              if (this['images'][i] === this['url2']) {
+                this['positionsBlock'].push([this['positionsBlock'][i][0] + 245, this['positionsBlock'][i][1]])
+                this['blocksMovable'].push(true)
+                this['images'].push(this['urlb2'])
+                this['arrowMovable'][index] = false
+                this['blocksMovable'][i] = false
+                this.moving = false
+              }
+              if (this['images'][i] === this['url3']) {
+                this['positionsBlock'].push([this['positionsBlock'][i][0] + 245, this['positionsBlock'][i][1]])
+                this['blocksMovable'].push(true)
+                this['images'].push(this['urlb3'])
+                this['arrowMovable'][index] = false
+                this['blocksMovable'][i] = false
+                this.moving = false
+              }
               break
             } else {
               this['color'][index] = 'purple'
@@ -138,7 +179,8 @@ export default {
     },
 
     addIMG: function (i) {
-      this['positionsBlock'].push([400, 200])
+      this['positionsBlock'].push([360, 150])
+      this['blocksMovable'].push(true)
       if (i === 1) {
         this['images'].push(this['url1'])
       }
@@ -152,6 +194,7 @@ export default {
 
     addOwnIMG: function (url) {
       this['positionsBlock'].push([400, 200])
+      this['blocksMovable'].push(true)
       this['images'].push(url)
     }
   }
