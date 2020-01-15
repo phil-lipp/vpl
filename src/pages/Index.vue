@@ -54,10 +54,7 @@ export default {
       urlb3: 'statics/img3bin.jpg',
       images: ['statics/img1.jpg'],
       color: ['purple'],
-      lanecounter: 1,
-      url1: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Codex_Manesse_127r.jpg/220px-Codex_Manesse_127r.jpg',
-      url2: 'https://upload.wikimedia.org/wikipedia/commons/7/7d/Freising_manuscript.jpg',
-      url3: 'https://www.typografie.info/3/uploads/monthly_03_2014/ccs-1-0-32484400-1393665236_thumb.jpg'
+      lanecounter: 1
     }
   },
   methods: {
