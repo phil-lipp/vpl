@@ -7,8 +7,10 @@
         <q-popup-proxy>
         <q-card class="my-card bg-grey-6 text-white">
           <q-card-actions vertical>
-            <q-btn flat @click="em3">Binarization</q-btn>
             <q-btn flat @click="em2">Add Lane</q-btn>
+            <q-btn flat @click="em3">Binarization</q-btn>
+            <q-btn flat @click="em4">Image Segmentation</q-btn>
+            <q-btn flat @click="em5">OCR</q-btn>
           </q-card-actions>
         </q-card>
         </q-popup-proxy>
@@ -125,7 +127,15 @@ export default {
     },
 
     em3: function () {
-      this.$emit('addArrow')
+      this.$emit('addBIN')
+    },
+
+    em4: function () {
+      this.$emit('addIMGSEG')
+    },
+
+    em5: function () {
+      this.$emit('addOCR')
     },
 
     image1: function () {
