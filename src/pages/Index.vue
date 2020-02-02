@@ -154,58 +154,67 @@ export default {
                 if (overlap) {
                   console.log(type + ' of index ' + index + ' collided of index ' + i)
                   this['color'][index] = 'green'
-                  if (this['images'][i] === this['url1']) {
+                  if (this['blockType'][i] === 'image' && this['images'][i] === this['url1']) {
                     this['arrowMovable'][index] = false
                     this['blocksMovable'][i] = false
-                    this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1]])
                     this['blocksMovable'].push(true)
                     this.moving = false
                     if (this['arrowType'][index] === 'BIN') {
                       this['images'].push(this['urlb1'])
                       this['blockType'].push('image')
+                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1]])
                     }
                     if (this['arrowType'][index] === 'SEG') {
                       this['images'].push(this['urls1'])
                       this['blockType'].push('image')
+                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1]])
                     }
                     if (this['arrowType'][index] === 'OCR') {
                       this['blockType'].push('txt1')
+                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1] + 50])
+                      this['images'].push(this['txt'])
                     }
                   }
-                  if (this['images'][i] === this['url2']) {
+                  if (this['blockType'][i] === 'image' && this['images'][i] === this['url2']) {
                     this['arrowMovable'][index] = false
                     this['blocksMovable'][i] = false
-                    this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1]])
                     this['blocksMovable'].push(true)
                     this.moving = false
                     if (this['arrowType'][index] === 'BIN') {
                       this['images'].push(this['urlb2'])
                       this['blockType'].push('image')
+                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1]])
                     }
                     if (this['arrowType'][index] === 'SEG') {
                       this['images'].push(this['urls2'])
                       this['blockType'].push('image')
+                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1]])
                     }
                     if (this['arrowType'][index] === 'OCR') {
                       this['blockType'].push('txt2')
+                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1] - 150])
+                      this['images'].push(this['txt'])
                     }
                   }
-                  if (this['images'][i] === this['url3']) {
+                  if (this['blockType'][i] === 'image' && this['images'][i] === this['url3']) {
                     this['arrowMovable'][index] = false
                     this['blocksMovable'][i] = false
-                    this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1]])
                     this['blocksMovable'].push(true)
                     this.moving = false
                     if (this['arrowType'][index] === 'BIN') {
                       this['images'].push(this['urlb3'])
                       this['blockType'].push('image')
+                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1]])
                     }
                     if (this['arrowType'][index] === 'SEG') {
                       this['images'].push(this['urls3'])
                       this['blockType'].push('image')
+                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1]])
                     }
                     if (this['arrowType'][index] === 'OCR') {
                       this['blockType'].push('txt3')
+                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1] - 70])
+                      this['images'].push(this['txt'])
                     }
                   }
                   break
