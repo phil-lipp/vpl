@@ -2,7 +2,7 @@
   <q-page>
   <div>
     <toolbar @addlane="incrementLanes()" @addBIN="addArrow('BIN')" @addIMGSEG="addArrow('SEG')" @addOCR="addArrow('OCR')" @image1="addIMG(1)" @image2="addIMG(2)" @image3="addIMG(3)"
-    @ownIMG="addOwnIMG"></toolbar>
+    @ownIMG="addOwnIMG"  @undoAction="undo()" @redoAction="redo()"></toolbar>
     <lane v-for="i in lanecounter" :key="'lane'+i" :numb="i"></lane>
     <z-top>
       <block :ht="'100px'" :wd="'120px'" :color="'blue'" :image="images[i-1]" :blockArt="blockType[i-1]" @mousedown.native="moveStart($event, 'Block', i-1)" @mouseup.native="moveEnd($event, 'Block', i-1)" @mousemove.native="moveActive($event, 'Block', i-1)"
@@ -59,13 +59,14 @@ export default {
       urls3: 'statics/img3seg.jpg',
       images: [],
       color: [],
-      lanecounter: 1
+      lanecounter: 1,
+      undoStack: [],
+      redoStack: []
     }
   },
   methods: {
     addArrow: function (type) {
-      // Read this:
-      // https://vuejs.org/2016/02/06/common-gotchas/
+      this['undoStack'].push('arr')
       this['positionsArrow'].push([480, 180])
       this['arrowMovable'].push(true)
       if (type === 'BIN') {
@@ -82,6 +83,7 @@ export default {
 
     incrementLanes: function () {
       this.lanecounter += 1
+      this['undoStack'].push('ln')
     },
 
     moveStart: function (event, type, index) {
@@ -155,6 +157,7 @@ export default {
                   console.log(type + ' of index ' + index + ' collided of index ' + i)
                   this['color'][index] = 'green'
                   if (this['blockType'][i] === 'image' && this['images'][i] === this['url1']) {
+                    this['undoStack'].push('blk')
                     this['arrowMovable'][index] = false
                     this['blocksMovable'][i] = false
                     this['blocksMovable'].push(true)
@@ -176,6 +179,7 @@ export default {
                     }
                   }
                   if (this['blockType'][i] === 'image' && this['images'][i] === this['url2']) {
+                    this['undoStack'].push('blk')
                     this['arrowMovable'][index] = false
                     this['blocksMovable'][i] = false
                     this['blocksMovable'].push(true)
@@ -197,6 +201,7 @@ export default {
                     }
                   }
                   if (this['blockType'][i] === 'image' && this['images'][i] === this['url3']) {
+                    this['undoStack'].push('blk')
                     this['arrowMovable'][index] = false
                     this['blocksMovable'][i] = false
                     this['blocksMovable'].push(true)
@@ -241,6 +246,7 @@ export default {
     },
 
     addIMG: function (i) {
+      this['undoStack'].push('blk')
       this['positionsBlock'].push([360, 150])
       this['blocksMovable'].push(true)
       this['blockType'].push('image')
@@ -256,10 +262,58 @@ export default {
     },
 
     addOwnIMG: function (url) {
+      this['undoStack'].push('blk')
       this['positionsBlock'].push([400, 200])
       this['blocksMovable'].push(true)
       this['images'].push(url)
       this['blockType'].push('image')
+    },
+
+    undo: function () {
+      if (this['undoStack'][this['undoStack'].length - 1] === 'arr') {
+        this['redoStack'].push(['arr', this['positionsArrow'][this['positionsArrow'].length - 1],
+          this['arrowMovable'][this['positionsArrow'].length - 1], this['arrowType'][this['positionsArrow'].length - 1],
+          this['color'][this['positionsArrow'].length - 1]])
+        this['arrowMovable'].splice(this['positionsArrow'].length - 1, 1)
+        this['arrowType'].splice(this['positionsArrow'].length - 1, 1)
+        this['color'].splice(this['positionsArrow'].length - 1, 1)
+        this['positionsArrow'].splice(this['positionsArrow'].length - 1, 1)
+      }
+      if (this['undoStack'][this['undoStack'].length - 1] === 'ln') {
+        this['lanecounter'] -= 1
+        this['redoStack'].push('ln')
+      }
+      if (this['undoStack'][this['undoStack'].length - 1] === 'blk') {
+        this['redoStack'].push(['blk', this['positionsBlock'][this['positionsBlock'].length - 1],
+          this['blocksMovable'][this['positionsBlock'].length - 1], this['blockType'][this['positionsBlock'].length - 1],
+          this['images'][this['positionsBlock'].length - 1]])
+        this['blocksMovable'].splice(this['positionsBlock'].length - 1, 1)
+        this['blockType'].splice(this['positionsBlock'].length - 1, 1)
+        this['images'].splice(this['positionsBlock'].length - 1, 1)
+        this['positionsBlock'].splice(this['positionsBlock'].length - 1, 1)
+      }
+      this['undoStack'].splice(this['undoStack'].length - 1, 1)
+    },
+
+    redo: function () {
+      if (this['redoStack'][this['redoStack'].length - 1] === 'ln') {
+        this.incrementLanes()
+      }
+      if (this['redoStack'][this['redoStack'].length - 1][0] === 'arr') {
+        this['positionsArrow'].push(this['redoStack'][this['redoStack'].length - 1][1])
+        this['arrowMovable'].push(this['redoStack'][this['redoStack'].length - 1][2])
+        this['arrowType'].push(this['redoStack'][this['redoStack'].length - 1][3])
+        this['color'].push(this['redoStack'][this['redoStack'].length - 1][4])
+        this['undoStack'].push('arr')
+      }
+      if (this['redoStack'][this['redoStack'].length - 1][0] === 'blk') {
+        this['positionsBlock'].push(this['redoStack'][this['redoStack'].length - 1][1])
+        this['blocksMovable'].push(this['redoStack'][this['redoStack'].length - 1][2])
+        this['blockType'].push(this['redoStack'][this['redoStack'].length - 1][3])
+        this['images'].push(this['redoStack'][this['redoStack'].length - 1][4])
+        this['undoStack'].push('blk')
+      }
+      this['redoStack'].splice(this['redoStack'].length - 1, 1)
     }
   }
 }

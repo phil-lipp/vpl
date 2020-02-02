@@ -76,15 +76,15 @@
        </q-card>
       </q-dialog>
       <q-space />
-      <q-btn icon="emoji_objects" label="Suggestions" stack color="grey" size="10px"/>
+      <q-btn disabled icon="emoji_objects" label="Suggestions" stack color="grey" size="10px"/>
       <q-space />
-      <q-btn icon="crop" label="Crop Image" stack color="grey" size="10px"/>
+      <q-btn disabled icon="crop" label="Crop Image" stack color="grey" size="10px"/>
       <q-space />
-      <q-btn icon="compare_arrows" label="Compare" stack color="grey" size="10px"/>
+      <q-btn disabled icon="compare_arrows" label="Compare" stack color="grey" size="10px"/>
       <q-space />
       <q-btn @click="$q.notify({message:'Process saved.', icon:'bookmark'})" icon="bookmark" label="Save Process" stack color="grey" size="10px"/>
       <q-space />
-      <q-btn icon="share" label="Insight" stack color="grey" size="10px"/>
+      <q-btn disabled icon="share" label="Insight" stack color="grey" size="10px"/>
       <q-space />
       <q-btn icon="settings_applications" label="Settings" stack color="grey" size="10px">
         <q-popup-proxy>
@@ -97,9 +97,9 @@
        </q-popup-proxy>
       </q-btn>
       <q-space />
-      <q-btn :disable="undoStack.length === 0" @click="undo; $q.notify({message:'Previous action undone.', icon:'undo'})" icon="undo" label="Undo" stack color="grey" size="10px"/>
+      <q-btn @click="undo" icon="undo" label="Undo" stack color="grey" size="10px"/>
       <q-space />
-      <q-btn :disable="redoStack.length === 0" @click="redo; $q.notify({message:'Previous action redone.', icon:'redo'})" icon="redo" label="Redo" stack color="grey" size="10px"/>
+      <q-btn @click="redo" icon="redo" label="Redo" stack color="grey" size="10px"/>
     </q-toolbar>
   </div>
 </template>
@@ -155,60 +155,11 @@ export default {
     },
 
     undo () {
-      // shift the stack
-      const data = this.undoStack.shift()
       this.$emit('undoAction')
-      if (data !== void 0) {
-        // block undo from receiving its own data
-        this.undoBlocked = true
-        this.$refs.editor.innerText = data
-      }
     },
 
     redo () {
-      // shift the stack
-      const data = this.redoStack.shift()
       this.$emit('redoAction')
-      if (data !== void 0) {
-        // unblock undo from receiving redo data
-        this.undoBlocked = false
-        this.$refs.editor.innerText = data
-      }
-    },
-
-    handler (mutationRecords) {
-      mutationRecords.forEach(record => {
-        if (record.type === 'characterData') {
-          this.undoStack.unshift(record.oldValue)
-          this.checkStack(this.undoStack)
-          this.clearStack(this.redoStack)
-        } else if (record.type === 'childList') {
-          record.removedNodes.forEach(node => {
-            if (this.undoBlocked === false) {
-              // comes from redo
-              this.undoStack.unshift(node.textContent)
-            } else {
-              // comes from undo
-              this.redoStack.unshift(node.textContent)
-            }
-          })
-
-          // check stacks
-          this.checkStack(this.undoStack)
-          this.checkStack(this.redoStack)
-          this.undoBlocked = false
-        }
-      })
-    },
-
-    checkStack (stack) {
-      if (stack.length > this.maxStack) {
-        stack.splice(this.maxStack)
-      }
-    },
-
-    clearStack (stack) {
-      stack.splice(0)
     }
   }
 }
