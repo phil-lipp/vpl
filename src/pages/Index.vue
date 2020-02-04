@@ -57,6 +57,9 @@ export default {
       urls1: 'statics/img1seg.jpg',
       urls2: 'statics/img2seg.jpg',
       urls3: 'statics/img3seg.jpg',
+      urlbs1: 'statics/img1binseg.jpg',
+      urlbs2: 'statics/img2binseg.jpg',
+      urlbs3: 'statics/img3binseg.jpg',
       images: [],
       color: [],
       lanecounter: 1,
@@ -156,6 +159,7 @@ export default {
                 if (overlap) {
                   console.log(type + ' of index ' + index + ' collided of index ' + i)
                   this['color'][index] = 'green'
+                  // Cases for Image being img1 standard (Binarization, Segmentation, OCR)
                   if (this['blockType'][i] === 'image' && this['images'][i] === this['url1']) {
                     this['undoStack'].push('blk')
                     this['arrowMovable'][index] = false
@@ -178,6 +182,7 @@ export default {
                       this['images'].push(this['txt'])
                     }
                   }
+                  // Cases for Image being img2 standard (Binarization, Segmentation, OCR)
                   if (this['blockType'][i] === 'image' && this['images'][i] === this['url2']) {
                     this['undoStack'].push('blk')
                     this['arrowMovable'][index] = false
@@ -196,10 +201,11 @@ export default {
                     }
                     if (this['arrowType'][index] === 'OCR') {
                       this['blockType'].push('txt2')
-                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1] - 150])
+                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1] + 20])
                       this['images'].push(this['txt'])
                     }
                   }
+                  // Cases for Image being img3 standard (Binarization, Segmentation, OCR)
                   if (this['blockType'][i] === 'image' && this['images'][i] === this['url3']) {
                     this['undoStack'].push('blk')
                     this['arrowMovable'][index] = false
@@ -218,9 +224,147 @@ export default {
                     }
                     if (this['arrowType'][index] === 'OCR') {
                       this['blockType'].push('txt3')
-                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1] - 70])
+                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1] + 20])
                       this['images'].push(this['txt'])
                     }
+                  }
+                  // Cases for Image being img1 binarized (Segmentation, OCR)
+                  if (this['blockType'][i] === 'image' && this['images'][i] === this['urlb1'] &&
+                  (this['arrowType'][index] === 'SEG' || this['arrowType'][index] === 'OCR')) {
+                    this['undoStack'].push('blk')
+                    this['arrowMovable'][index] = false
+                    this['blocksMovable'][i] = false
+                    this['blocksMovable'].push(true)
+                    if (this['arrowType'][index] === 'SEG') {
+                      this['images'].push(this['urlbs1'])
+                      this['blockType'].push('image')
+                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1]])
+                    }
+                    if (this['arrowType'][index] === 'OCR') {
+                      this['blockType'].push('txt1')
+                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1] + 50])
+                      this['images'].push(this['txt'])
+                    }
+                  }
+                  // Cases for Image being img2 binarized (Segmentation, OCR)
+                  if (this['blockType'][i] === 'image' && this['images'][i] === this['urlb2'] &&
+                  (this['arrowType'][index] === 'SEG' || this['arrowType'][index] === 'OCR')) {
+                    this['undoStack'].push('blk')
+                    this['arrowMovable'][index] = false
+                    this['blocksMovable'][i] = false
+                    this['blocksMovable'].push(true)
+                    if (this['arrowType'][index] === 'SEG') {
+                      this['images'].push(this['urlbs2'])
+                      this['blockType'].push('image')
+                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1]])
+                    }
+                    if (this['arrowType'][index] === 'OCR') {
+                      this['blockType'].push('txt2')
+                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1] + 20])
+                      this['images'].push(this['txt'])
+                    }
+                  }
+                  // Cases for Image being img3 binarized (Segmentation, OCR)
+                  if (this['blockType'][i] === 'image' && this['images'][i] === this['urlb3'] &&
+                  (this['arrowType'][index] === 'SEG' || this['arrowType'][index] === 'OCR')) {
+                    this['undoStack'].push('blk')
+                    this['arrowMovable'][index] = false
+                    this['blocksMovable'][i] = false
+                    this['blocksMovable'].push(true)
+                    if (this['arrowType'][index] === 'SEG') {
+                      this['images'].push(this['urlbs3'])
+                      this['blockType'].push('image')
+                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1]])
+                    }
+                    if (this['arrowType'][index] === 'OCR') {
+                      this['blockType'].push('txt3')
+                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1] + 20])
+                      this['images'].push(this['txt'])
+                    }
+                  }
+                  // Cases for Image being img1 segmented (Binarization, OCR)
+                  if (this['blockType'][i] === 'image' && this['images'][i] === this['urls1'] &&
+                  (this['arrowType'][index] === 'BIN' || this['arrowType'][index] === 'OCR')) {
+                    this['undoStack'].push('blk')
+                    this['arrowMovable'][index] = false
+                    this['blocksMovable'][i] = false
+                    this['blocksMovable'].push(true)
+                    if (this['arrowType'][index] === 'BIN') {
+                      this['images'].push(this['urlbs1'])
+                      this['blockType'].push('image')
+                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1]])
+                    }
+                    if (this['arrowType'][index] === 'OCR') {
+                      this['blockType'].push('txt1')
+                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1] + 50])
+                      this['images'].push(this['txt'])
+                    }
+                  }
+                  // Cases for Image being img2 segmented (Binarization, OCR)
+                  if (this['blockType'][i] === 'image' && this['images'][i] === this['urls2'] &&
+                  (this['arrowType'][index] === 'BIN' || this['arrowType'][index] === 'OCR')) {
+                    this['undoStack'].push('blk')
+                    this['arrowMovable'][index] = false
+                    this['blocksMovable'][i] = false
+                    this['blocksMovable'].push(true)
+                    if (this['arrowType'][index] === 'BIN') {
+                      this['images'].push(this['urlbs2'])
+                      this['blockType'].push('image')
+                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1]])
+                    }
+                    if (this['arrowType'][index] === 'OCR') {
+                      this['blockType'].push('txt2')
+                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1] + 20])
+                      this['images'].push(this['txt'])
+                    }
+                  }
+                  // Cases for Image being img3 segmented (Binarization, OCR)
+                  if (this['blockType'][i] === 'image' && this['images'][i] === this['urls3'] &&
+                  (this['arrowType'][index] === 'BIN' || this['arrowType'][index] === 'OCR')) {
+                    this['undoStack'].push('blk')
+                    this['arrowMovable'][index] = false
+                    this['blocksMovable'][i] = false
+                    this['blocksMovable'].push(true)
+                    if (this['arrowType'][index] === 'BIN') {
+                      this['images'].push(this['urlbs3'])
+                      this['blockType'].push('image')
+                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1]])
+                    }
+                    if (this['arrowType'][index] === 'OCR') {
+                      this['blockType'].push('txt3')
+                      this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1] + 20])
+                      this['images'].push(this['txt'])
+                    }
+                  }
+                  // Cases for Image being img1 segmented and binarized (OCR)
+                  if (this['blockType'][i] === 'image' && this['images'][i] === this['urlbs1'] && this['arrowType'][index] === 'OCR') {
+                    this['undoStack'].push('blk')
+                    this['arrowMovable'][index] = false
+                    this['blocksMovable'][i] = false
+                    this['blocksMovable'].push(true)
+                    this['blockType'].push('txt1')
+                    this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1] + 50])
+                    this['images'].push(this['txt'])
+                  }
+                  // Cases for Image being img2 segmented and binarized (OCR)
+                  if (this['blockType'][i] === 'image' && this['images'][i] === this['urlbs2'] && this['arrowType'][index] === 'OCR') {
+                    this['undoStack'].push('blk')
+                    this['arrowMovable'][index] = false
+                    this['blocksMovable'][i] = false
+                    this['blocksMovable'].push(true)
+                    this['blockType'].push('txt2')
+                    this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1] + 20])
+                    this['images'].push(this['txt'])
+                  }
+                  // Cases for Image being img3 segmented and binarized (OCR)
+                  if (this['blockType'][i] === 'image' && this['images'][i] === this['urlbs3'] && this['arrowType'][index] === 'OCR') {
+                    this['undoStack'].push('blk')
+                    this['arrowMovable'][index] = false
+                    this['blocksMovable'][i] = false
+                    this['blocksMovable'].push(true)
+                    this['blockType'].push('txt3')
+                    this['positionsBlock'].push([this['positionsBlock'][i][0] + 290, this['positionsBlock'][i][1] + 20])
+                    this['images'].push(this['txt'])
                   }
                   break
                 } else {
